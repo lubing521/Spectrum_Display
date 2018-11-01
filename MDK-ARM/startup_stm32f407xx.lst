@@ -869,13 +869,12 @@ ARM Macro Assembler    Page 14
               00000000 
               00000000 
 Command Line: --debug --xref --diag_suppress=9931 --cpu=Cortex-M4.fp --apcs=int
-erwork --depend=test\startup_stm32f407xx.d -otest\startup_stm32f407xx.o -ID:\co
-operation\stm32f407_ADC_DAC_DMA\stm32f407_ADC_DAC_MDA\test\MDK-ARM\RTE -I"C:\Pr
-ogram Files\MDK5\ARM\PACK\ARM\CMSIS\4.2.0\CMSIS\Include" -I"C:\Program Files\MD
-K5\ARM\PACK\Keil\STM32F4xx_DFP\1.0.8\Device\Include" --predefine="__MICROLIB SE
-TA 1" --predefine="__UVISION_VERSION SETA 514" --predefine="_RTE_ SETA 1" --pre
-define="STM32F40_41xxx SETA 1" --list=startup_stm32f407xx.lst startup_stm32f407
-xx.s
+erwork --depend=test\startup_stm32f407xx.d -otest\startup_stm32f407xx.o -IE:\研
+究生期间\材料学院\Spectrum_Display\MDK-ARM\RTE -IC:\Keil_v5\ARM\PACK\ARM\CMSIS\
+4.2.0\CMSIS\Include -IC:\Keil_v5\ARM\PACK\Keil\STM32F4xx_DFP\1.0.8\Device\Inclu
+de --predefine="__MICROLIB SETA 1" --predefine="__UVISION_VERSION SETA 514" --p
+redefine="_RTE_ SETA 1" --predefine="STM32F40_41xxx SETA 1" --list=startup_stm3
+2f407xx.lst startup_stm32f407xx.s
 
 
 

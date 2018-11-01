@@ -1,0 +1,15 @@
+"D:\arm\bin\armproc.dll" 
+
+"D:\arm\bin\armjlink2.dll" 
+
+"E:\研究生期间\材料学院\Spectrum_Display\IAR\Debug\Exe\Spectrum_Display.out" 
+
+--plugin="D:\arm\bin\armbat.dll" 
+
+--device_macro="D:\arm\config\debugger\ST\STM32F4xx.dmac" 
+
+--flash_loader="D:\arm\config\flashloader\ST\FlashSTM32F4xxx.board" 
+
+
+
+

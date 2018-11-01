@@ -98,8 +98,7 @@ struTouch       ctpxy;      // 电容触摸屏的参数
 int main(void)
 {
   /* USER CODE BEGIN 1 */
-
-	uint8_t         pagenum=0;
+  uint8_t pagenum=0;
   /* USER CODE END 1 */
 
   /* MCU Configuration----------------------------------------------------------*/
@@ -126,45 +125,23 @@ int main(void)
   /* Initialize interrupts */
   MX_NVIC_Init();
   /* USER CODE BEGIN 2 */
-	HAL_UART_Receive_DMA(&huart1, U1_Rec_Buffer, U1_REC_MAX_BYTES);
-	delay_init(168);
+  HAL_UART_Receive_DMA(&huart1, U1_Rec_Buffer, U1_REC_MAX_BYTES);
+  delay_init(168);
   FT6336_I2C_GPIO_Init();   // LCD屏的触摸屏的2个引脚初始化
   LCD_Initialize();         // LCD屏的复位引脚，背光引脚 初始化
-	Lcd_Clear_All(BLACK);
-//	graphpage();
-	//LCD_ShowChar(100, 100, '6');
-//	mainpage();
-	//showhz(200, 100, 0);
-/////////////////////////    
+  Lcd_Clear_All(BLACK);
   /* USER CODE END 2 */
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
-    while (1)
-    {
-			ReadCTP(&ctpxy);
-			pageswitch(&pagenum);//页码切换
-			appswitch(&pagenum);//功能切换
-			touchwait();
-			delay_ms(10);
-//			ReadCTP(&ctpxy); 
-//			if(ctpxy.ctpxy.ctp_x>400&&ctpxy.ctpxy.ctp_x<800)
-//			{
-//				Lcd_Clear_All(BLACK);
-////				for(i=0;i<60000;i++){
-////					for(j=0;j<60000;j++);
-////				}
-//				//HAL_UART_Transmit_IT(&huart1,U1_Rec_Buffer,100); // 发送strlength个字节的数据
-//			}
-//			else{
-//				Lcd_Clear_All(WHITE_4_4);
-//			}
-  /* USER CODE END WHILE */
-
-  /* USER CODE BEGIN 3 */
+   while (1)
+   {
+      ReadCTP(&ctpxy);
+      pageswitch(&pagenum);//页码切换
+      appswitch(&pagenum);//功能切换
+      touchwait();
+      delay_ms(10);
     }
-  /* USER CODE END 3 */
-
 }
 
 /**

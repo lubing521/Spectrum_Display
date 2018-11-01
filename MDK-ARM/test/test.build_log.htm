@@ -5,11 +5,11 @@
 <h2>Tool Versions:</h2>
 IDE-Version: μVision V5.14.0.0
 Copyright (C) 2015 ARM Ltd and ARM Germany GmbH. All rights reserved.
-License Information: X JC, SHU, LIC=Q7GLQ-N7PAM-GP5ZR-K82IL-FN80V-H9A1E
+License Information: 111111 yao, 111, LIC=MGXGK-ZRUCT-YD7K5-GG6IN-Q46U8-QRSF3
  
 Tool Versions:
 Toolchain:       MDK-ARM Professional  Version: 5.14.0.0
-Toolchain Path:  C:\Program Files\MDK5\ARM\ARMCC\Bin
+Toolchain Path:  C:\Keil_v5\ARM\ARMCC\Bin
 C Compiler:      Armcc.exe V5.05 update 1 (build 106)
 Assembler:       Armasm.exe V5.05 update 1 (build 106)
 Linker/Locator:  ArmLink.exe V5.05 update 1 (build 106)
@@ -21,12 +21,55 @@ Target DLL:      Segger\JL2CM3.dll V2.99.13.0
 Dialog DLL:      TCM.DLL V1.14.4.0
  
 <h2>Project:</h2>
-D:\cooperation\stm32f407_ADC_DAC_DMA\stm32f407_ADC_DAC_MDA\test\MDK-ARM\test.uvprojx
-Project File Date:  10/08/2018
+E:\研究生期间\材料学院\Spectrum_Display\MDK-ARM\test.uvprojx
+Project File Date:  10/23/2018
 
 <h2>Output:</h2>
 Build target 'test'
-"test\test.axf" - 0 Error(s), 0 Warning(s).
+compiling app.c...
+..\app\app.h(7): warning:  #1295-D: Deprecated declaration touchwait - give arg types
+  void touchwait();
+..\app\app.h(13): warning:  #1-D: last line of file ends without a newline
+  #endif
+..\page\page.h(4): warning:  #1295-D: Deprecated declaration mainpage - give arg types
+  void mainpage();
+..\page\page.h(5): warning:  #1295-D: Deprecated declaration graphpage - give arg types
+  void graphpage();
+..\page\page.h(6): warning:  #1295-D: Deprecated declaration showaxis - give arg types
+  void showaxis();
+..\page\page.h(7): warning:  #1295-D: Deprecated declaration reportpage - give arg types
+  void reportpage();
+..\page\page.h(18): warning:  #1-D: last line of file ends without a newline
+  #endif
+..\app\app.c(30): warning:  #187-D: use of "=" where "==" may have been intended
+                        if((ctpxy.ctpmainstatus=TOUCHED)){
+..\app\app.c(141): warning:  #1-D: last line of file ends without a newline
+  }
+..\app\app.c: 9 warnings, 0 errors
+compiling page.c...
+..\page\page.h(4): warning:  #1295-D: Deprecated declaration mainpage - give arg types
+  void mainpage();
+..\page\page.h(5): warning:  #1295-D: Deprecated declaration graphpage - give arg types
+  void graphpage();
+..\page\page.h(6): warning:  #1295-D: Deprecated declaration showaxis - give arg types
+  void showaxis();
+..\page\page.h(7): warning:  #1295-D: Deprecated declaration reportpage - give arg types
+  void reportpage();
+..\page\page.h(18): warning:  #1-D: last line of file ends without a newline
+  #endif
+..\page\page.c(212): warning:  #1-D: last line of file ends without a newline
+  }
+..\page\page.c: 6 warnings, 0 errors
+compiling GUI.c...
+..\hardware\lcd_drive\font.h(298): warning:  #1-D: last line of file ends without a newline
+  #endif
+..\hardware\GUI\GUI.c(201): warning:  #1-D: last line of file ends without a newline
+  }
+..\hardware\GUI\GUI.c: 2 warnings, 0 errors
+linking...
+Program Size: Code=16488 RO-data=54632 RW-data=28 ZI-data=17004  
+FromELF: creating hex file...
+"test\test.axf" - 0 Error(s), 17 Warning(s).
 
 <h2>Software Packages used:</h2>
 
@@ -37,9 +80,9 @@ Package Vendor: ARM
    * Component: CORE Version: 3.40.0
 
 <h2>Collection of Component include folders:</h2>
-  D:\cooperation\stm32f407_ADC_DAC_DMA\stm32f407_ADC_DAC_MDA\test\MDK-ARM\RTE
-  C:\Program Files\MDK5\ARM\PACK\ARM\CMSIS\4.2.0\CMSIS\Include
-  C:\Program Files\MDK5\ARM\PACK\Keil\STM32F4xx_DFP\1.0.8\Device\Include
+  E:\研究生期间\材料学院\Spectrum_Display\MDK-ARM\RTE
+  C:\Keil_v5\ARM\PACK\ARM\CMSIS\4.2.0\CMSIS\Include
+  C:\Keil_v5\ARM\PACK\Keil\STM32F4xx_DFP\1.0.8\Device\Include
 
 <h2>Collection of Component Files used:</h2>
 
