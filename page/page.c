@@ -1,8 +1,12 @@
 #include "page.h"
-#include  "lcd_drive.h"
+#include "lcd_drive.h"
 #include "gui.h"
 #include "delay.h"
+#include "array.h"
+#include "app.h"
+
 extern uint8_t U1_Rec_Buffer[];
+extern int8_t touchoffset;
 void showgraph(void)
 {
   uint16_t i;
@@ -90,72 +94,99 @@ void reportpage()
   showhz(305, 30, 13,80);  //±¨
   showhz(305+160, 30, 14,80); //¸æ
 }
+
+/* 
+*@brief: show the x-axis and y-axis
+*/
 void showaxis()
 {
   uint16_t i;
-  for(i=0;i<6;i++) 
-     Gui_Draw_Line(stx-50,sty+i, endx+1, sty+i, WHITE_4_4);
-  for(i=0;i<6;i++) 
-    Gui_Draw_Line(stx+i,sty+50, stx+i, endy+1, WHITE_4_4);
+  /* draw x-axis */
+  for(i=0;i<5;i++) 
+     Gui_Draw_Line(stx,sty-i, endx, sty-i, WHITE_4_4);
+  
+  /* draw y-axis */
+  for(i=0;i<5;i++) 
+    Gui_Draw_Line(stx-i,sty, stx-i, endy, WHITE_4_4);
+  
+  /* draw the arrow on y-axis */
+  for(i=0;i<8;i++) 
+    Gui_Draw_Line(stx-3,endy+i, stx-10-i, endy+8+i, WHITE_4_4);
+  for(i=0;i<8;i++) 
+    Gui_Draw_Line(stx-3,endy+i, stx+10+i, endy+8+i, WHITE_4_4);
+  
+  /* draw the arrow on x-axis */
   for(i=0;i<12;i++) 
-    Gui_Draw_Line(stx+3,endy-10+i, stx+3-5-i, endy-10+20+i, WHITE_4_4);
+    Gui_Draw_Line(endx-i,sty-2, endx-12-10+i, sty+12-i, WHITE_4_4);
   for(i=0;i<12;i++) 
-    Gui_Draw_Line(stx+3,endy-10+i, stx+3+5+i, endy+20+i-10, WHITE_4_4);
-  for(i=0;i<12;i++) 
-    Gui_Draw_Line(endx+10-i,sty+3, endx-20-i+10, sty+3-5-i, WHITE_4_4);
-  for(i=0;i<12;i++) 
-    Gui_Draw_Line(endx+10-i,sty+3, endx-20-i+10, sty+3+5+i, WHITE_4_4);
-  LCD_ShowChar(stx-8-16, sty+14,'O',32);
+    Gui_Draw_Line(endx-i,sty-2, endx-12-10+i, sty-12+i, WHITE_4_4);
+  
+
+   /* draw the scale on x-axis */
+  for(i=1;i<=4;i++)
+  {
+    Gui_Draw_Line(stx+200*i-3,sty, stx+200*i-3, sty-10, WHITE_4_4);
+    Gui_Draw_Line(stx+200*i-2,sty, stx+200*i-2, sty-10, WHITE_4_4);
+    Gui_Draw_Line(stx+200*i-1,sty, stx+200*i-1, sty-10, WHITE_4_4);
+    Gui_Draw_Line(stx+200*i,sty, stx+200*i, sty-10, WHITE_4_4);
+  }
+  
+  /* draw the scale on y-axis */
   for(i=1;i<=5;i++)
   {
-    Gui_Draw_Line(stx+120*i,sty, stx+120*i, sty-10, WHITE_4_4);
-    Gui_Draw_Line(stx+120*i+1,sty, stx+120*i+1, sty-10, WHITE_4_4);
-    Gui_Draw_Line(stx+120*i+2,sty, stx+120*i+2, sty-10, WHITE_4_4);
+    Gui_Draw_Line(stx, sty-80*i-3, stx+5, sty-80*i-3, WHITE_4_4);
+    Gui_Draw_Line(stx, sty-80*i-2, stx+5, sty-80*i-2, WHITE_4_4);
+    Gui_Draw_Line(stx, sty-80*i-1, stx+5, sty-80*i-1, WHITE_4_4);
+    Gui_Draw_Line(stx, sty-80*i, stx+5, sty-80*i, WHITE_4_4);
   }
-  for(i=1;i<=5;i++)
+  
+  /* draw the num below y-axis */
+  displayNumBelow_y_axis(kfirstindex, DisplayNumArray[0+touchoffset*4]);
+  displayNumBelow_y_axis(ksecondindex, DisplayNumArray[1+touchoffset*4]);
+  displayNumBelow_y_axis(kthirdindex, DisplayNumArray[2+touchoffset*4]);
+  displayNumBelow_y_axis(kfourthindex, DisplayNumArray[3+touchoffset*4]);
+ 	
+}
+
+/*
+*@brief: display the num below y-axis
+*/
+
+void displayNumBelow_y_axis(num_display_below_y_axis t_index, char* t_shownum)
+{
+  char* shownum = NULL;
+  uint8_t i = 0;
+  num_display_below_y_axis index = kfirstindex;
+  if(t_shownum != NULL)
   {
-    Gui_Draw_Line(stx+6,sty-40*i, stx+5+6, sty-40*i, WHITE_4_4);
-    Gui_Draw_Line(stx+6,sty-40*i+1, stx+5+6, sty-40*i+1, WHITE_4_4);
-    Gui_Draw_Line(stx+6,sty-40*i+2, stx+5+6, sty-40*i+2, WHITE_4_4);
-  }
-  for(i=1;i<=26;i++)
-  {
-    Gui_Draw_Line(stx+24*i,sty, stx+24*i, sty-6, WHITE_4_4);
-    Gui_Draw_Line(stx+24*i+1,sty, stx+24*i+1, sty-6, WHITE_4_4);
-    Gui_Draw_Line(stx+24*i+2,sty, stx+24*i+2, sty-6, WHITE_4_4);
-  }
-  for(i=1;i<=5;i++)
-  {
-    Gui_Draw_Line(stx+6,sty-40*i+20, stx+3+6, sty-40*i+20, WHITE_4_4);
-    Gui_Draw_Line(stx+6,sty-40*i+20+1, stx+3+6, sty-40*i+20+1, WHITE_4_4);
-    Gui_Draw_Line(stx+6,sty-40*i+20+2, stx+3+6, sty-40*i+20+2, WHITE_4_4);
-  }
-  for(i=25;i<=125;i=i+25)
-  {
-    if(i==50)
+    shownum = t_shownum;
+    index = t_index;
+    while((*shownum) != '\0')
     {
-      LCD_ShowChar(stx+120*i/25-16, sty+10,5+0x30,32);
-      LCD_ShowChar(stx+120*i/25, sty+10,0x30,32);
-    }
-    else if(i==25)
-    {
-      LCD_ShowChar(stx+120*i/25-16, sty+10,2+0x30,32);
-      LCD_ShowChar(stx+120*i/25, sty+10,5+0x30,32);
-    }
-    else if(i==75)
-    {
-      LCD_ShowChar(stx+120*i/25-16, sty+10,7+0x30,32);
-      LCD_ShowChar(stx+120*i/25, sty+10,5+0x30,32);
-    }
-    else
-    {
-      LCD_ShowChar(stx+120*i/25-16-8, sty+10,i/100+0x30,32);
-      LCD_ShowChar(stx+120*i/25-8, sty+10,i/10%10+0x30,32);
-      LCD_ShowChar(stx+120*i/25+8, sty+10,i%10+0x30,32);
+      LCD_ShowChar(stx+4*50*index-16*(2-i),sty+10,*shownum ,32);
+      shownum++;
+      i++;
     }
   }
-  LCD_ShowChar(stx-5-16*2.5, endy-3,'C',32);
-  LCD_ShowChar(endx-5, sty+12,'A',32);	
+}
+
+/*
+*@brief: change the num below the y-axis if move y-axis with touchlcd
+*/
+void moveNumBelow_y_axis(void)
+{
+  ClearAreaBelow_y_axis();
+  if(touchoffset <= 4)
+  {
+    displayNumBelow_y_axis(kfirstindex, DisplayNumArray[0+touchoffset*4]);
+    displayNumBelow_y_axis(ksecondindex, DisplayNumArray[1+touchoffset*4]);
+    displayNumBelow_y_axis(kthirdindex, DisplayNumArray[2+touchoffset*4]);
+    displayNumBelow_y_axis(kfourthindex, DisplayNumArray[3+touchoffset*4]);
+  }
+  else 
+  {
+    displayNumBelow_y_axis(kfirstindex, DisplayNumArray[20]);
+  }
 }
 
 void rightarrow(uint16_t x,uint16_t y)
@@ -168,4 +199,9 @@ void leftarrow(uint16_t x,uint16_t y)
 {
   LCD_ShowChar(x, y,'<',64);
   LCD_ShowChar(x+32, y,'-',64);
+}
+
+void ClearAreaBelow_y_axis(void)
+{
+  Lcd_Clear_Some_Area(23,430,endx,480-1,BLACK);  
 }

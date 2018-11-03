@@ -88,6 +88,8 @@ uint16_t POINT_COLOR=WHITE_4_4;
 uint16_t BACK_COLOR=BLACK;
 uint8_t  setminute=1;
 struTouch       ctpxy;      // 电容触摸屏的参数	
+
+int8_t touchoffset = 0;
 /* USER CODE END 0 */
 
 /**
@@ -98,7 +100,7 @@ struTouch       ctpxy;      // 电容触摸屏的参数
 int main(void)
 {
   /* USER CODE BEGIN 1 */
-  uint8_t pagenum=0;
+  //uint8_t pagenum=0;
   /* USER CODE END 1 */
 
   /* MCU Configuration----------------------------------------------------------*/
@@ -134,14 +136,19 @@ int main(void)
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
-   while (1)
-   {
-      ReadCTP(&ctpxy);
-      pageswitch(&pagenum);//页码切换
-      appswitch(&pagenum);//功能切换
-      touchwait();
-      delay_ms(10);
-    }
+  showaxis();
+  while (1)
+  {
+     ReadCTP(&ctpxy);
+//     pageswitch(&pagenum);//页码切换
+//     appswitch(&pagenum);//功能切换
+//     ReadCTP(&ctpxy);
+     
+     y_axis_move();
+     moveNumBelow_y_axis();
+     touchwait();
+     delay_ms(10);
+  }
 }
 
 /**
@@ -150,7 +157,6 @@ int main(void)
   */
 void SystemClock_Config(void)
 {
-
   RCC_OscInitTypeDef RCC_OscInitStruct;
   RCC_ClkInitTypeDef RCC_ClkInitStruct;
 

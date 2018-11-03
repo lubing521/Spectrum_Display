@@ -4,6 +4,9 @@
 #include "page.h"
 #include "gui.h"
 #include "lcd_drive.h"
+
+extern int8_t touchoffset;
+
 void pageswitch(uint8_t *pagenum){
 	if((*pagenum)==0){
 		mainpage();
@@ -142,6 +145,41 @@ void appswitch(uint8_t *pagenum)
       }
     }
   }
+}
+
+/* 
+*@brief: move the y-axis with touchlcd 
+*/
+void y_axis_move(void)
+{
+  while(1)
+  {  
+    ReadCTP(&ctpxy);
+    if(ctpxy.ctpmainstatus == TOUCHED)
+    {
+      if(ctpxy.xmove == LEFT_MOVING)
+      {
+        if(ctpxy.dx <= (int16_t)-50)
+        {
+          touchoffset += 1;
+          break;
+        }
+      }
+      else if(ctpxy.xmove == RIGHT_MOVING)
+      {
+        if(ctpxy.dy >= (int16_t)50)
+        {
+          touchoffset -= 1;
+          break;
+        }
+      }
+    }
+  }
+  if((touchoffset < 0) || (touchoffset > 5))
+  {
+    touchoffset = 0;
+  }
+  touchwait();
 }
 
 void touchwait()
