@@ -7,7 +7,7 @@
 void pageswitch(uint8_t *pagenum);//Ò³ÂëÇÐ»»
 void appswitch(uint8_t *pagenum);//¹¦ÄÜÇÐ»»
 void touchwait();
-void y_axis_move(void);
+void App_y_axis_move(void);
 
 #define plusxpos 850-60+8
 #define plusypos 220+16

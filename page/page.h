@@ -15,12 +15,16 @@
 
 void mainpage();
 void graphpage();
-void showaxis();
 void reportpage();
 void rightarrow(uint16_t x,uint16_t y);
 void leftarrow(uint16_t x,uint16_t y);
-void displayNumBelow_y_axis(num_display_below_y_axis t_index, char* t_shownum);
-void moveNumBelow_y_axis(void);
-void ClearAreaBelow_y_axis(void);
+
+void PageShowAxis(void);
+void PageDisplayNumBelow_y_axis(num_display_below_y_axis t_index, char* t_shownum);
+void PageMoveNumBelow_y_axis(void);
+void PageClearAreaBelow_y_axis(void);
+void PageDisplaySpectrum(uint16_t t_index, uint32_t t_value, uint16_t t_color);
+void PageMoveSpectrum(uint16_t t_color);
+void PageClearSpectrumArea(void);
 
 #endif  /* _PAGE_H_ */

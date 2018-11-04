@@ -48,26 +48,26 @@ void mainpage()
   LCD_ShowChar(850-160, 220, setminute+0x30,64);
 }
 
-void graphpage()
-{
-  delay_ms(500);
-  Lcd_Clear_All(BLACK);
-  showhz(185, 30, 5,80);
-  showhz(185+80*1, 30, 6,80);
-  showhz(185+80*2, 30, 7,80);
-  showhz(185+80*3, 30, 8,80);
-  showhz(185+80*4, 30, 11,80);
-  showhz(185+80*5, 30, 12,80);
-  Gui_Draw_Line(0,120+30, 853, 120+30, WHITE_4_4);
-  Gui_Draw_Line(0,121+30, 853, 121+30, WHITE_4_4);
-  Gui_Draw_Line(0,122+30, 853, 122+30, WHITE_4_4);
-  Gui_Draw_Line(0,123+30, 853, 123+30, WHITE_4_4);
-  Gui_Draw_Line(0,124+30, 853, 124+30, WHITE_4_4);
-  Gui_Draw_Line(0,125+30, 853, 125+30, WHITE_4_4);
-  showaxis();
-  showgraph();
-  rightarrow(854-64-20,240-32);
-}
+//void graphpage()
+//{
+//  delay_ms(500);
+//  Lcd_Clear_All(BLACK);
+//  showhz(185, 30, 5,80);
+//  showhz(185+80*1, 30, 6,80);
+//  showhz(185+80*2, 30, 7,80);
+//  showhz(185+80*3, 30, 8,80);
+//  showhz(185+80*4, 30, 11,80);
+//  showhz(185+80*5, 30, 12,80);
+//  Gui_Draw_Line(0,120+30, 853, 120+30, WHITE_4_4);
+//  Gui_Draw_Line(0,121+30, 853, 121+30, WHITE_4_4);
+//  Gui_Draw_Line(0,122+30, 853, 122+30, WHITE_4_4);
+//  Gui_Draw_Line(0,123+30, 853, 123+30, WHITE_4_4);
+//  Gui_Draw_Line(0,124+30, 853, 124+30, WHITE_4_4);
+//  Gui_Draw_Line(0,125+30, 853, 125+30, WHITE_4_4);
+//  showaxis();
+//  showgraph();
+//  rightarrow(854-64-20,240-32);
+//}
 
 void reportpage()
 {
@@ -96,18 +96,18 @@ void reportpage()
 }
 
 /* 
-*@brief: show the x-axis and y-axis
+*@brief: display the x-axis and y-axis on lcd
 */
-void showaxis()
+void PageShowAxis(void)
 {
   uint16_t i;
   /* draw x-axis */
   for(i=0;i<5;i++) 
-     Gui_Draw_Line(stx,sty-i, endx, sty-i, WHITE_4_4);
+     Gui_Draw_Line(stx,sty+i, endx, sty+i, WHITE_4_4);
   
   /* draw y-axis */
   for(i=0;i<5;i++) 
-    Gui_Draw_Line(stx-i,sty, stx-i, endy, WHITE_4_4);
+    Gui_Draw_Line(stx-i,sty+4, stx-i, endy, WHITE_4_4);
   
   /* draw the arrow on y-axis */
   for(i=0;i<8;i++) 
@@ -117,42 +117,44 @@ void showaxis()
   
   /* draw the arrow on x-axis */
   for(i=0;i<12;i++) 
-    Gui_Draw_Line(endx-i,sty-2, endx-12-10+i, sty+12-i, WHITE_4_4);
+    Gui_Draw_Line(endx-i,sty+2, endx-12-10+i, sty+12-i+2, WHITE_4_4);
   for(i=0;i<12;i++) 
-    Gui_Draw_Line(endx-i,sty-2, endx-12-10+i, sty-12+i, WHITE_4_4);
+    Gui_Draw_Line(endx-i,sty+2, endx-12-10+i, sty-12+i+2, WHITE_4_4);
   
 
    /* draw the scale on x-axis */
   for(i=1;i<=4;i++)
   {
-    Gui_Draw_Line(stx+200*i-3,sty, stx+200*i-3, sty-10, WHITE_4_4);
-    Gui_Draw_Line(stx+200*i-2,sty, stx+200*i-2, sty-10, WHITE_4_4);
-    Gui_Draw_Line(stx+200*i-1,sty, stx+200*i-1, sty-10, WHITE_4_4);
-    Gui_Draw_Line(stx+200*i,sty, stx+200*i, sty-10, WHITE_4_4);
+    Gui_Draw_Line(stx+200*i-3,sty+4, stx+200*i-3, sty+10+4, WHITE_4_4);
+    Gui_Draw_Line(stx+200*i-2,sty+4, stx+200*i-2, sty+10+4, WHITE_4_4);
+    Gui_Draw_Line(stx+200*i-1,sty+4, stx+200*i-1, sty+10+4, WHITE_4_4);
+    Gui_Draw_Line(stx+200*i,sty+4, stx+200*i, sty+10+4, WHITE_4_4);
   }
   
   /* draw the scale on y-axis */
   for(i=1;i<=5;i++)
   {
-    Gui_Draw_Line(stx, sty-80*i-3, stx+5, sty-80*i-3, WHITE_4_4);
-    Gui_Draw_Line(stx, sty-80*i-2, stx+5, sty-80*i-2, WHITE_4_4);
-    Gui_Draw_Line(stx, sty-80*i-1, stx+5, sty-80*i-1, WHITE_4_4);
-    Gui_Draw_Line(stx, sty-80*i, stx+5, sty-80*i, WHITE_4_4);
+    Gui_Draw_Line(stx-4, sty-80*i-3, stx-5-4, sty-80*i-3, WHITE_4_4);
+    Gui_Draw_Line(stx-4, sty-80*i-2, stx-5-4, sty-80*i-2, WHITE_4_4);
+    Gui_Draw_Line(stx-4, sty-80*i-1, stx-5-4, sty-80*i-1, WHITE_4_4);
+    Gui_Draw_Line(stx-4, sty-80*i, stx-5-4, sty-80*i, WHITE_4_4);
   }
   
   /* draw the num below y-axis */
-  displayNumBelow_y_axis(kfirstindex, DisplayNumArray[0+touchoffset*4]);
-  displayNumBelow_y_axis(ksecondindex, DisplayNumArray[1+touchoffset*4]);
-  displayNumBelow_y_axis(kthirdindex, DisplayNumArray[2+touchoffset*4]);
-  displayNumBelow_y_axis(kfourthindex, DisplayNumArray[3+touchoffset*4]);
+  PageDisplayNumBelow_y_axis(kfirstindex, DisplayNumArray[0+touchoffset*4]);
+  PageDisplayNumBelow_y_axis(ksecondindex, DisplayNumArray[1+touchoffset*4]);
+  PageDisplayNumBelow_y_axis(kthirdindex, DisplayNumArray[2+touchoffset*4]);
+  PageDisplayNumBelow_y_axis(kfourthindex, DisplayNumArray[3+touchoffset*4]);
  	
 }
 
 /*
 *@brief: display the num below y-axis
+*@param: t_index -- the value between 0-3
+         t_shownum -- the string to be displayed
 */
 
-void displayNumBelow_y_axis(num_display_below_y_axis t_index, char* t_shownum)
+void PageDisplayNumBelow_y_axis(num_display_below_y_axis t_index, char* t_shownum)
 {
   char* shownum = NULL;
   uint8_t i = 0;
@@ -173,20 +175,90 @@ void displayNumBelow_y_axis(num_display_below_y_axis t_index, char* t_shownum)
 /*
 *@brief: change the num below the y-axis if move y-axis with touchlcd
 */
-void moveNumBelow_y_axis(void)
+void PageMoveNumBelow_y_axis(void)
 {
-  ClearAreaBelow_y_axis();
+  PageClearAreaBelow_y_axis();
   if(touchoffset <= 4)
   {
-    displayNumBelow_y_axis(kfirstindex, DisplayNumArray[0+touchoffset*4]);
-    displayNumBelow_y_axis(ksecondindex, DisplayNumArray[1+touchoffset*4]);
-    displayNumBelow_y_axis(kthirdindex, DisplayNumArray[2+touchoffset*4]);
-    displayNumBelow_y_axis(kfourthindex, DisplayNumArray[3+touchoffset*4]);
+    PageDisplayNumBelow_y_axis(kfirstindex, DisplayNumArray[0+touchoffset*4]);
+    PageDisplayNumBelow_y_axis(ksecondindex, DisplayNumArray[1+touchoffset*4]);
+    PageDisplayNumBelow_y_axis(kthirdindex, DisplayNumArray[2+touchoffset*4]);
+    PageDisplayNumBelow_y_axis(kfourthindex, DisplayNumArray[3+touchoffset*4]);
   }
   else 
   {
-    displayNumBelow_y_axis(kfirstindex, DisplayNumArray[20]);
+    PageDisplayNumBelow_y_axis(kfirstindex, DisplayNumArray[20]);
   }
+}
+
+/* 
+*@brief: clear the area below y-axis
+*/
+void PageClearAreaBelow_y_axis(void)
+{
+  Lcd_Clear_Some_Area(23,430,endx,480-1,BLACK);  
+}
+
+/*
+*@brief: display Spectrum 
+*@param: t_index -- the index in x-axis
+         t_value -- the spectrum value
+         t_color -- the color
+*/
+void PageDisplaySpectrum(uint16_t t_index, uint32_t t_value, uint16_t t_color)
+{
+  uint16_t index;
+  uint32_t value;
+  uint16_t color;
+  uint8_t i = 0;
+  
+  index = t_index;
+  value = t_value;
+  color = t_color;
+  
+  for(i=0; i<4; i++)
+  {
+    Gui_Draw_Line(23+4*index+i, sty, 23+4*index+i, sty-value, color);
+  }
+}
+
+/*
+*@brief: change the spectrum display if touch lcd was lef_move or right_move
+*@param: t_color -- the color of the line
+*/
+void PageMoveSpectrum(uint16_t t_color)
+{
+  uint32_t tempvalue;
+  uint8_t i = 0;
+  uint16_t color;
+  
+  PageClearSpectrumArea();
+  
+  color = t_color;
+  
+  if(touchoffset <= 4)
+  {
+    for(i=0; i<200; i++)
+    {
+      tempvalue = test_data[i+touchoffset*200];
+      PageDisplaySpectrum(i, tempvalue, color);
+    }
+  }
+  else 
+  {
+     PageDisplaySpectrum(0, test_data[1020], color);
+     PageDisplaySpectrum(0, test_data[1021], color);
+     PageDisplaySpectrum(0, test_data[1022], color);
+     PageDisplaySpectrum(0, test_data[1023], color);
+  }
+}
+
+/*
+*@brief: clear the spectrum display area
+*/
+void PageClearSpectrumArea(void)
+{
+  Lcd_Clear_Some_Area(23, 20, 823, sty, BLACK);
 }
 
 void rightarrow(uint16_t x,uint16_t y)
@@ -201,7 +273,3 @@ void leftarrow(uint16_t x,uint16_t y)
   LCD_ShowChar(x+32, y,'-',64);
 }
 
-void ClearAreaBelow_y_axis(void)
-{
-  Lcd_Clear_Some_Area(23,430,endx,480-1,BLACK);  
-}

@@ -51,6 +51,9 @@
 #include  "delay.h"
 #include  "page.h"
 #include  "app.h"
+    
+#include "displaywindows.h"    
+      
 /* USER CODE END Includes */
 
 /* Private variables ---------------------------------------------------------*/
@@ -83,10 +86,10 @@ uint8_t   U1_Rec_Buffer[U1_REC_MAX_BYTES];  // 接收缓存区
 uint16_t  U1_Rec_Point;                     // 接收指针
 uint8_t   U1_Send_Buffer[U1_SEND_MAX_BYTES];// USART1  发送缓存区 
 
-
+uint8_t  setminute = 0;
 uint16_t POINT_COLOR=WHITE_4_4;
 uint16_t BACK_COLOR=BLACK;
-uint8_t  setminute=1;
+
 struTouch       ctpxy;      // 电容触摸屏的参数	
 
 int8_t touchoffset = 0;
@@ -136,17 +139,26 @@ int main(void)
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
-  showaxis();
+  LcdDisplayBackground();
+  LcdDisplayWindows();
   while (1)
   {
      ReadCTP(&ctpxy);
 //     pageswitch(&pagenum);//页码切换
 //     appswitch(&pagenum);//功能切换
 //     ReadCTP(&ctpxy);
-     
-     y_axis_move();
-     moveNumBelow_y_axis();
-     touchwait();
+     if(ctpxy.ctpmainstatus == TOUCHED)
+     {
+       if((ctpxy.ctpxy.ctp_x >= ICON_SPECTRUM_XS) && (ctpxy.ctpxy.ctp_x <= (ICON_SPECTRUM_XS+ICON_WIDE_SIZE)) && (ctpxy.ctpxy.ctp_y >= ICON_SPECTRUM_YS) && (ctpxy.ctpxy.ctp_y <= (ICON_SPECTRUM_YS+ICON_HIGH_SIZE)))
+       {
+         Lcd_Clear_All(BLACK);
+         PageShowAxis();
+         App_y_axis_move();
+         PageMoveNumBelow_y_axis();
+         PageMoveSpectrum(BLUE_3_4);
+       }
+     }
+//     touchwait();
      delay_ms(10);
   }
 }
