@@ -52,7 +52,7 @@
 #include  "page.h"
 #include  "app.h"
     
-#include "displaywindows.h"    
+   
       
 /* USER CODE END Includes */
 
@@ -91,6 +91,7 @@ uint16_t POINT_COLOR=WHITE_4_4;
 uint16_t BACK_COLOR=BLACK;
 
 struTouch       ctpxy;      // 电容触摸屏的参数	
+function_select MainFuntionSelect = k_function_basewindow;
 
 int8_t touchoffset = 0;
 /* USER CODE END 0 */
@@ -145,19 +146,19 @@ int main(void)
   {
      ReadCTP(&ctpxy);
 //     pageswitch(&pagenum);//页码切换
-//     appswitch(&pagenum);//功能切换
+     AppSwitch();//功能切换
 //     ReadCTP(&ctpxy);
-     if(ctpxy.ctpmainstatus == TOUCHED)
-     {
-       if((ctpxy.ctpxy.ctp_x >= ICON_SPECTRUM_XS) && (ctpxy.ctpxy.ctp_x <= (ICON_SPECTRUM_XS+ICON_WIDE_SIZE)) && (ctpxy.ctpxy.ctp_y >= ICON_SPECTRUM_YS) && (ctpxy.ctpxy.ctp_y <= (ICON_SPECTRUM_YS+ICON_HIGH_SIZE)))
-       {
-         Lcd_Clear_All(BLACK);
-         PageShowAxis();
-         App_y_axis_move();
-         PageMoveNumBelow_y_axis();
-         PageMoveSpectrum(BLUE_3_4);
-       }
-     }
+//     if(ctpxy.ctpmainstatus == TOUCHED)
+//     {
+//       if((ctpxy.ctpxy.ctp_x >= ICON_SPECTRUM_XS) && (ctpxy.ctpxy.ctp_x <= (ICON_SPECTRUM_XS+ICON_WIDE_SIZE)) && (ctpxy.ctpxy.ctp_y >= ICON_SPECTRUM_YS) && (ctpxy.ctpxy.ctp_y <= (ICON_SPECTRUM_YS+ICON_HIGH_SIZE)))
+//       {
+//         Lcd_Clear_All(BLACK);
+//         PageShowAxis();
+//         App_y_axis_move();
+//         PageMoveNumBelow_y_axis();
+//         PageMoveSpectrum(BLUE_3_4);
+//       }
+//     }
 //     touchwait();
      delay_ms(10);
   }

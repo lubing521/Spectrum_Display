@@ -6,6 +6,7 @@
 #include "lcd_drive.h"
 
 extern int8_t touchoffset;
+extern function_select MainFuntionSelect;
 
 void pageswitch(uint8_t *pagenum){
 	if((*pagenum)==0){
@@ -150,18 +151,48 @@ extern UART_HandleTypeDef huart1;
 /*
 *@brief: function switch
 */
-void AppSwitch()
+void AppSwitch(void)
 {
-  
+  if(MainFuntionSelect == k_function_basewindow)
+  {
+    while(1)
+    {
+      ReadCTP(&ctpxy);
+     
+      /* if click the spectrum icon */
+      if((ctpxy.ctpxy.ctp_x >= ICON_SPECTRUM_XS) && 
+         (ctpxy.ctpxy.ctp_x <= (ICON_SPECTRUM_XS+ICON_WIDE_SIZE)) && 
+         (ctpxy.ctpxy.ctp_y >= ICON_SPECTRUM_YS) && 
+         (ctpxy.ctpxy.ctp_y <= (ICON_SPECTRUM_YS+ICON_HIGH_SIZE)))
+      {
+         
+           touchwait();
+           MainFuntionSelect = k_function_spectrum;
+           //AppSpectrumDisplay();
+      }
+      if(MainFuntionSelect != k_function_basewindow)
+        break;
+     }
+  }
+  if(MainFuntionSelect == k_function_spectrum)
+  {
+    AppSpectrumDisplay();
+    while(MainFuntionSelect == k_function_spectrum)
+    {
+      App_y_axis_move();
+      PageMoveNumBelow_y_axis();
+      PageMoveSpectrum(BLUE_3_4);
+    }
+  }
 }
 
 /*
 *@brief: spectrum display function
 */
-void AppSpectrumDisplay()
+void AppSpectrumDisplay(void)
 {
   Lcd_Clear_All(BLACK);
-  PageShowAxis();
+  PageSpectrumInit(BLUE_3_4);
   App_y_axis_move();
   PageMoveNumBelow_y_axis();
   PageMoveSpectrum(BLUE_3_4);

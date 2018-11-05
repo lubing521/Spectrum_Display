@@ -261,6 +261,17 @@ void PageClearSpectrumArea(void)
   Lcd_Clear_Some_Area(23, 20, 823, sty, BLACK);
 }
 
+/*
+*@brief: when sample finish display the initial screen 
+*/
+void PageSpectrumInit(uint16_t color)
+{
+  uint16_t i = 0;
+  PageShowAxis();
+  for(i=0; i<200; i++)
+    PageDisplaySpectrum(i, test_data[i], color);
+}
+
 void rightarrow(uint16_t x,uint16_t y)
 {
   LCD_ShowChar(x, y,'-',64);
