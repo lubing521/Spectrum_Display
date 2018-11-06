@@ -27,5 +27,8 @@ void PageClearAreaBelow_y_axis(void);
 void PageDisplaySpectrum(uint16_t t_index, uint32_t t_value, uint16_t t_color);
 void PageMoveSpectrum(uint16_t t_color);
 void PageClearSpectrumArea(void);
+void PageDisplayBeforeSample(void);
+void PageDisplayIsSample(void);
+void PageDisplayString(uint16_t t_x, uint16_t t_y, uint16_t t_size, char *t_string);
 
 #endif  /* _PAGE_H_ */

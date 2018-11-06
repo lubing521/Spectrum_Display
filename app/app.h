@@ -17,12 +17,14 @@ typedef enum t_dispaly_background
   t_nodisplay = 1U,
 }display_background;
 
+
 void pageswitch(uint8_t *pagenum);//Ò³ÂëÇÐ»»
 void touchwait();
 
 void AppSwitch(void);
 void AppSpectrumDisplay(void);
 void App_y_axis_move(void);
+void AppStartSample(void);
 
 #define plusxpos 850-60+8
 #define plusypos 220+16

@@ -2375,7 +2375,13 @@
             <name>$PROJ_DIR$\..\app\app.c</name>
         </file>
         <file>
+            <name>$PROJ_DIR$\..\app\displaywindows.c</name>
+        </file>
+        <file>
             <name>$PROJ_DIR$\..\page\page.c</name>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\..\app\showpicture.c</name>
         </file>
     </group>
     <group>

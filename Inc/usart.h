@@ -48,7 +48,7 @@
 #include "main.h"
 
 /* USER CODE BEGIN Includes */
-#define           U1_REC_MAX_BYTES     256
+#define           U1_REC_MAX_BYTES     1024
 #define           U1_SEND_MAX_BYTES    100
 /* USER CODE END Includes */
 

@@ -29,6 +29,8 @@
 "test\delay.o"
 "test\app.o"
 "test\page.o"
+"test\displaywindows.o"
+"test\showpicture.o"
 "test\gui.o"
 "test\lcd_drive.o"
 "test\touch.o"

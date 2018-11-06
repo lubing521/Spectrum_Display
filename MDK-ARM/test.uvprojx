@@ -365,7 +365,7 @@
               <MiscControls>--C99</MiscControls>
               <Define>USE_HAL_DRIVER,STM32F407xx</Define>
               <Undefine></Undefine>
-              <IncludePath>../Inc; ../Drivers/STM32F4xx_HAL_Driver/Inc; ../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy; ../Drivers/CMSIS/Device/ST/STM32F4xx/Include; ../Drivers/CMSIS/Include; ..\hardware\led; ..\hardware\key; ..\hardware\exti_test; ..\hardware\lcd_drive; ..\hardware\touch; ..\hardware\GUI; ..\hardware\w25q64; ..\hardware\tftDisp; ..\hardware\delay; ..\app; ..\page</IncludePath>
+              <IncludePath>../Inc;../Drivers/STM32F4xx_HAL_Driver/Inc;../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy;../Drivers/CMSIS/Device/ST/STM32F4xx/Include;../Drivers/CMSIS/Include;..\hardware\led;..\hardware\key;..\hardware\exti_test;..\hardware\lcd_drive;..\hardware\touch;..\hardware\GUI;..\hardware\w25q64;..\hardware\tftDisp;..\hardware\delay;..\app;..\page</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -577,6 +577,16 @@
               <FileName>page.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\page\page.c</FilePath>
+            </File>
+            <File>
+              <FileName>displaywindows.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\app\displaywindows.c</FilePath>
+            </File>
+            <File>
+              <FileName>showpicture.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\app\showpicture.c</FilePath>
             </File>
           </Files>
         </Group>

@@ -1,12 +1,18 @@
 #include "page.h"
 #include "lcd_drive.h"
-#include "gui.h"
+#include "GUI.h"
 #include "delay.h"
 #include "array.h"
 #include "app.h"
 
+#include "string.h"
+
 extern uint8_t U1_Rec_Buffer[];
 extern int8_t touchoffset;
+
+extern uint16_t BACK_COLOR;
+extern uint16_t POINT_COLOR;
+
 void showgraph(void)
 {
   uint16_t i;
@@ -177,6 +183,8 @@ void PageDisplayNumBelow_y_axis(num_display_below_y_axis t_index, char* t_shownu
 */
 void PageMoveNumBelow_y_axis(void)
 {
+  BACK_COLOR = BLACK;
+  POINT_COLOR = WHITE_4_4;
   PageClearAreaBelow_y_axis();
   if(touchoffset <= 4)
   {
@@ -270,6 +278,59 @@ void PageSpectrumInit(uint16_t color)
   PageShowAxis();
   for(i=0; i<200; i++)
     PageDisplaySpectrum(i, test_data[i], color);
+}
+
+/*
+*@brief:the page before sample
+*/
+void PageDisplayBeforeSample(void)
+{
+    BACK_COLOR = BLACK;
+    POINT_COLOR = WHITE_4_4;
+    Lcd_Clear_All(BLACK);
+    PageDisplayString(100, 240, 32, "Please click anywhere to start sample!");
+}
+
+/*
+*@brief:Display is Sample on lcd screen
+*/
+void PageDisplayIsSample(void)
+{
+  BACK_COLOR = BLACK;
+  POINT_COLOR = WHITE_4_4;
+  Lcd_Clear_All(BLACK);
+  PageDisplayString(300, 200, 32, "Sampling");
+}
+
+/*
+*@brief:display the string on lcd
+*@param:   t_x -- x
+           t_y -- y
+           t_size -- size of the char
+           t_string -- the string to be display
+*/
+void PageDisplayString(uint16_t t_x, uint16_t t_y, uint16_t t_size, char *t_string)
+{
+  uint16_t x,y;
+  char *string = NULL;
+  uint8_t i,len;
+  uint16_t size = 0;
+  
+  if(t_string != NULL)
+  {
+    string = t_string;
+    x = t_x;
+    y = t_y;
+    size = t_size;
+    len = strlen(string);
+    
+    for(i=0; i<len; i++)
+    {
+      LCD_ShowChar(x+(i*size/2), y, *string, size);
+      string++;
+    }
+    
+  }
 }
 
 void rightarrow(uint16_t x,uint16_t y)

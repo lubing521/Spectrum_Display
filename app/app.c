@@ -2,11 +2,17 @@
 #include "delay.h"
 #include "touch.h"
 #include "page.h"
-#include "gui.h"
+#include "GUI.h"
 #include "lcd_drive.h"
+
+uint8_t AppStartSampleArray[4] = {0xee, 0x00,0x0D,0x00};
+uint8_t AppReceiveDmaFinish = 0;
 
 extern int8_t touchoffset;
 extern function_select MainFuntionSelect;
+
+extern uint16_t BACK_COLOR;
+extern uint16_t POINT_COLOR;
 
 void pageswitch(uint8_t *pagenum){
 	if((*pagenum)==0){
@@ -154,6 +160,8 @@ extern display_background MainDispalyBackground;
 */
 void AppSwitch(void)
 {
+  uint8_t Sample_loop_times = 0;
+  /* switch to the baas background */
   if(MainFuntionSelect == k_function_basewindow)
   {
     if(MainDispalyBackground == t_display)
@@ -166,7 +174,7 @@ void AppSwitch(void)
     {
       ReadCTP(&ctpxy);
      
-      /* if click the spectrum icon */
+      /* if click the spectrum icon then switch to spectrum */
       if((ctpxy.ctpxy.ctp_x >= ICON_SPECTRUM_XS) && 
          (ctpxy.ctpxy.ctp_x <= (ICON_SPECTRUM_XS+ICON_WIDE_SIZE)) && 
          (ctpxy.ctpxy.ctp_y >= ICON_SPECTRUM_YS) && 
@@ -175,14 +183,39 @@ void AppSwitch(void)
          
            touchwait();
            MainFuntionSelect = k_function_spectrum;
-           //AppSpectrumDisplay();
       }
       if(MainFuntionSelect != k_function_basewindow)
         break;
      }
   }
+  
+  /* Switch to the spectrum display */
   if(MainFuntionSelect == k_function_spectrum)
   {
+    PageDisplayBeforeSample();
+    while(1)
+    {
+      ReadCTP(&ctpxy);
+      if(ctpxy.ctpmainstatus == TOUCHED)
+        break;
+    }
+    touchwait();
+    AppStartSample();
+    PageDisplayIsSample();
+    while(AppReceiveDmaFinish != 1)
+    {
+        BACK_COLOR = BLACK;
+        POINT_COLOR = PINGKISH_4_4;
+        LCD_ShowChar(150+Sample_loop_times*100,250, '.', 64);
+        delay_ms(50);
+        Sample_loop_times++;
+        if(Sample_loop_times == 6)
+        {
+          Lcd_Clear_Some_Area(150, 250, endx, 400,BACK_COLOR);
+          Sample_loop_times = 0;
+          delay_ms(50);
+        }
+    }
     AppSpectrumDisplay();
     while(MainFuntionSelect == k_function_spectrum)
     {
@@ -194,10 +227,12 @@ void AppSwitch(void)
 }
 
 /*
-*@brief: spectrum display function
+*@brief: spectrum initial display function
 */
 void AppSpectrumDisplay(void)
 {
+  BACK_COLOR = BLACK;
+  POINT_COLOR = WHITE_4_4;
   Lcd_Clear_All(BLACK);
   PageSpectrumInit(BLUE_3_4);
   App_y_axis_move();
@@ -206,7 +241,7 @@ void AppSpectrumDisplay(void)
 }
 
 /* 
-*@brief: move the y-axis with touchlcd 
+*@brief: move the y-axis in touchlcd 
 */
 void App_y_axis_move(void)
 {
@@ -215,6 +250,7 @@ void App_y_axis_move(void)
     ReadCTP(&ctpxy);
     if(ctpxy.ctpmainstatus == TOUCHED)
     {
+      /* if left moving */
       if(ctpxy.xmove == LEFT_MOVING)
       {
         if(ctpxy.dx <= (int16_t)(-200))
@@ -223,6 +259,8 @@ void App_y_axis_move(void)
           break;
         }
       }
+      
+      /* if right moving */
       else if(ctpxy.xmove == RIGHT_MOVING)
       {
         if(ctpxy.dy >= (int16_t)(200))
@@ -231,6 +269,8 @@ void App_y_axis_move(void)
           break;
         }
       }
+      
+      /* if click blank space */
       if(ctpxy.ctpxy.ctp_x < stx)
       {
         MainFuntionSelect = k_function_basewindow;
@@ -251,6 +291,22 @@ void App_y_axis_move(void)
 */
 void AppStartSample(void)
 {
+  HAL_StatusTypeDef ret;
+  ret = HAL_UART_Transmit(&huart1, AppStartSampleArray, 4, 50);
+  if(ret == HAL_TIMEOUT)
+  {
+    /* ÇëÇó³¬Ê± */
+  }
+  else if(ret == HAL_ERROR)
+  {
+    /* something error */
+  }
+  else if(ret == HAL_BUSY)
+  {
+    /* the device is busy*/
+  }
+  else if(ret == HAL_OK)
+  {}
 }
 
 void touchwait()

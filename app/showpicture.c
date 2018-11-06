@@ -52,7 +52,7 @@ void LcdShowIconName(uint16_t t_x, uint16_t t_y, uint8_t *t_string)
   
     for(i=0; i<len; i++)
     {
-      LCD_ShowChar((x+i), y, *string, 32);
+      LCD_ShowChar((x+i*32), y, *string, 32);
       string++;
     }
   }
