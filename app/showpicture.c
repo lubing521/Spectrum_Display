@@ -2,6 +2,8 @@
 #include "GUI.h"
 #include "string.h"
 
+extern uint16_t POINT_COLOR;
+
 /*
 *@brief:show the picture on lcd
 *@param: t_x--picture start x
@@ -42,6 +44,8 @@ void LcdShowIconName(uint16_t t_x, uint16_t t_y, uint8_t *t_string)
   uint16_t x;
   uint16_t y;
   uint8_t *string;
+  
+  POINT_COLOR=BLACK;
   
   x = t_x;
   y = t_y;

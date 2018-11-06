@@ -5,7 +5,8 @@
 #include "GUI.h"
 #include "lcd_drive.h"
 
-uint8_t AppStartSampleArray[4] = {0xee, 0x00,0x0D,0x00};
+uint8_t AppStartSampleArray[4] = {0xee, 0x00,0x00,0x0D};
+Spec_RecData AppSpecRecData;
 uint8_t AppReceiveDmaFinish = 0;
 
 extern int8_t touchoffset;
@@ -30,130 +31,8 @@ extern uint8_t  setminute;
 extern uint8_t U1_Rec_Buffer[];
 extern struTouch  ctpxy;  
 extern UART_HandleTypeDef huart1;
+extern UART_HandleTypeDef huart2;
 extern display_background MainDispalyBackground;
-//void appswitch(uint8_t *pagenum)
-//{
-//  uint32_t i;
-//  uint32_t tmp;
-//  uint8_t tx;
-//  if((*pagenum)==0)
-//  {
-//    while((*pagenum)==0)
-//    {
-//      ReadCTP(&ctpxy);
-//      if((ctpxy.ctpmainstatus == TOUCHED))
-//      {
-//      /* Plus the setminute */
-//        if(ctpxy.ctpxy.ctp_x<plusxpos+errarea&&ctpxy.ctpxy.ctp_x>plusxpos-errarea)
-//        {
-//          if(ctpxy.ctpxy.ctp_y<plusypos+errarea&&ctpxy.ctpxy.ctp_y>plusypos-errarea)
-//          {
-//            if(setminute==5)
-//              setminute=5;
-//            else
-//              setminute=setminute+1;
-//            LCD_ShowChar(850-160, 220, setminute+0x30,64);
-//          }
-//        }
-//        /* minus the setminute */
-//        else if(ctpxy.ctpxy.ctp_x<minusxpos+errarea&&ctpxy.ctpxy.ctp_x>minusxpos-errarea)
-//        {
-//          if(ctpxy.ctpxy.ctp_y<minusypos+errarea&&ctpxy.ctpxy.ctp_y>minusypos-errarea)
-//          {
-//            if(setminute==1)
-//              setminute=1;
-//            else
-//              setminute=setminute-1;
-//          }
-//          LCD_ShowChar(850-160, 220, setminute+0x30,64);
-//         }
-//          /* if touch begin sample */
-//        else if(ctpxy.ctpxy.ctp_y>380&&ctpxy.ctpxy.ctp_y<480)
-//        {
-//        /* Display status and stop button */
-//          Lcd_Clear_Some_Area(0,220,853,479,BLACK);
-//          HAL_UART_Receive_DMA(&huart1, U1_Rec_Buffer, 256);
-//          showhz(204+14+108*1, 380, 14,64);
-//          showhz(204+14+108*2, 380, 15,64);
-//          showhz(204+14+64*0, 220, 2,64);
-//          showhz(204+14+64*1, 220, 3,64);
-//          showhz(204+14+64*2, 220, 4,64);
-//          showhz(204+14+64*3, 220, 5,64);
-//          LCD_ShowChar(204+14+64*4, 220, ':',64);
-//          LCD_ShowChar(204+14+108*3+60, 220, '%',64);
-//          /* begin sample */
-//          tx=0x80;
-//          HAL_UART_Transmit_IT(&huart1,&tx,1);
-//          touchwait();
-//          for(i=0;i<60*setminute*100;i++)
-//          {
-//            if(i%5==0)
-//            {
-//              tmp=i;
-//              LCD_ShowChar(204+14+108*3-100+60, 220, tmp/(60*setminute)/100+0x30,64);
-//              LCD_ShowChar(204+14+108*3-100+32+60, 220, (tmp/(60*setminute)/10)%10+0x30,64);
-//              LCD_ShowChar(204+14+108*3-100+32*2+60, 220, tmp/(60*setminute)%10+0x30,64);
-//            }
-//            delay_ms(1);
-//            ReadCTP(&ctpxy);		
-//            if(ctpxy.ctpxy.ctp_y>380&&ctpxy.ctpxy.ctp_y<479)
-//            {
-//              /* if touch stop */
-//              touchwait();
-//              tx=0x40;
-//              HAL_UART_Transmit_IT(&huart1,&tx,1);
-//              HAL_UART_Receive_DMA(&huart1, U1_Rec_Buffer, 256);
-//              delay_ms(1000);
-//              tx=0x20;
-//              HAL_UART_Transmit_IT(&huart1,&tx,1);
-//              *pagenum=1;
-//              return;
-//            }					
-//            delay_ms(9);
-//          }
-//          /* sample finish */
-//          tx=0x40;
-//          HAL_UART_Transmit_IT(&huart1,&tx,1);
-//          delay_ms(1000);			
-//          tx=0x20;
-//          HAL_UART_Transmit_IT(&huart1,&tx,1);
-//          *pagenum=1;
-//        }
-//      }
-//	touchwait();
-//    }
-//  }
-//  else if((*pagenum)==1)
-//  {
-//  /* Display report page */
-//    while((*pagenum)==1)
-//    {
-//      ReadCTP(&ctpxy);
-//      if(ctpxy.ctpxy.ctp_x>754&&ctpxy.ctpxy.ctp_x<854&&ctpxy.ctpxy.ctp_y>210&&ctpxy.ctpxy.ctp_y<270)
-//      {
-//        *pagenum=2;
-//	touchwait();
-//      }
-//    }
-//  }
-//  else if((*pagenum)==2)
-//  {
-//    while((*pagenum)==2)
-//    {
-//      ReadCTP(&ctpxy);
-//      if(ctpxy.ctpxy.ctp_x>754&&ctpxy.ctpxy.ctp_x<854&&ctpxy.ctpxy.ctp_y>210&&ctpxy.ctpxy.ctp_y<270)
-//      {
-//        *pagenum=0;
-//	touchwait();
-//      }
-//      else if(ctpxy.ctpxy.ctp_x>20&&ctpxy.ctpxy.ctp_x<100&&ctpxy.ctpxy.ctp_y>210&&ctpxy.ctpxy.ctp_y<270)
-//      {
-//	*pagenum=1;
-//	touchwait();
-//      }
-//    }
-//  }
-//}
 
 /*
 *@brief: function switch
@@ -200,28 +79,40 @@ void AppSwitch(void)
         break;
     }
     touchwait();
-    AppStartSample();
-    PageDisplayIsSample();
-    while(AppReceiveDmaFinish != 1)
+    if(AppStartSample() == HAL_OK)
     {
-        BACK_COLOR = BLACK;
-        POINT_COLOR = PINGKISH_4_4;
-        LCD_ShowChar(150+Sample_loop_times*100,250, '.', 64);
-        delay_ms(50);
-        Sample_loop_times++;
-        if(Sample_loop_times == 6)
-        {
-          Lcd_Clear_Some_Area(150, 250, endx, 400,BACK_COLOR);
-          Sample_loop_times = 0;
+      /* Receive base of DMA */
+      AppEnableRecDMA(&huart2, AppSpecRecData.datafield, 1030);
+      /* Display is sampling */
+      PageDisplayIsSample();
+      while(AppReceiveDmaFinish != 1)
+      {
+          BACK_COLOR = BLACK;
+          POINT_COLOR = PINGKISH_4_4;
+          LCD_ShowChar(150+Sample_loop_times*100,250, '.', 64);
           delay_ms(50);
+          Sample_loop_times++;
+          if(Sample_loop_times == 6)
+          {
+            Lcd_Clear_Some_Area(150, 250, endx, 400,BACK_COLOR);
+            Sample_loop_times = 0;
+            delay_ms(50);
+          }
+      }
+      if(AppReceiveDmaFinish == 1)
+      {
+        if(AppSpecRecData.datafield != NULL)
+        {
+          AppSpectrumDisplay(AppSpecRecData.Realdatafiled.Body);
+          while(MainFuntionSelect == k_function_spectrum)
+          {
+            App_y_axis_move();
+            PageMoveNumBelow_y_axis();
+            PageMoveSpectrum(BLUE_3_4, AppSpecRecData.Realdatafiled.Body);
+          }
+          AppReceiveDmaFinish = 0;
         }
-    }
-    AppSpectrumDisplay();
-    while(MainFuntionSelect == k_function_spectrum)
-    {
-      App_y_axis_move();
-      PageMoveNumBelow_y_axis();
-      PageMoveSpectrum(BLUE_3_4);
+      }
     }
   }
 }
@@ -229,15 +120,15 @@ void AppSwitch(void)
 /*
 *@brief: spectrum initial display function
 */
-void AppSpectrumDisplay(void)
+void AppSpectrumDisplay(uint8_t *t_data)
 {
   BACK_COLOR = BLACK;
   POINT_COLOR = WHITE_4_4;
   Lcd_Clear_All(BLACK);
-  PageSpectrumInit(BLUE_3_4);
+  PageSpectrumInit(BLUE_3_4, t_data);
   App_y_axis_move();
   PageMoveNumBelow_y_axis();
-  PageMoveSpectrum(BLUE_3_4);
+  PageMoveSpectrum(BLUE_3_4, t_data);
 }
 
 /* 
@@ -289,24 +180,54 @@ void App_y_axis_move(void)
 /* 
 *@brief:start sample
 */
-void AppStartSample(void)
+HAL_StatusTypeDef AppStartSample(void)
 {
   HAL_StatusTypeDef ret;
-  ret = HAL_UART_Transmit(&huart1, AppStartSampleArray, 4, 50);
+  ret = HAL_UART_Transmit(&huart2, AppStartSampleArray, 4, 50);
   if(ret == HAL_TIMEOUT)
   {
-    /* ÇëÇó³¬Ê± */
+    /* request timeout */
+    Lcd_Clear_All(BLACK);
+    POINT_COLOR = RED_3_4;
+    PageDisplayString(200, 300, 64, "Request timeout!");
   }
   else if(ret == HAL_ERROR)
   {
     /* something error */
+    Lcd_Clear_All(BLACK);
+    POINT_COLOR = RED_3_4;
+    PageDisplayString(200, 300, 64, "Request error!");
   }
   else if(ret == HAL_BUSY)
   {
     /* the device is busy*/
+    Lcd_Clear_All(BLACK);
+    POINT_COLOR = RED_3_4;
+    PageDisplayString(200, 300, 64, "The device is busy!");
   }
-  else if(ret == HAL_OK)
-  {}
+  return ret;
+}
+
+HAL_StatusTypeDef AppEnableRecDMA(UART_HandleTypeDef *t_huart, uint8_t *t_pData, uint16_t t_Size)
+{
+  HAL_StatusTypeDef ret ;
+  if(t_pData != NULL)
+  {
+    ret = HAL_UART_Receive_DMA(t_huart, t_pData, t_Size);
+    if(ret == HAL_ERROR)
+    {
+      Lcd_Clear_All(BLACK);
+      POINT_COLOR = RED_3_4;
+      PageDisplayString(200, 300, 64, "ERROR BUFFER!");
+    }
+    else if(ret == HAL_BUSY)
+    {
+      Lcd_Clear_All(BLACK);
+      POINT_COLOR = RED_3_4;
+      PageDisplayString(200, 300, 64, "THE DMA is USing,please wait!");
+    }
+  }
+  return ret;
 }
 
 void touchwait()

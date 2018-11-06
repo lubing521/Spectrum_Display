@@ -20,12 +20,12 @@ void rightarrow(uint16_t x,uint16_t y);
 void leftarrow(uint16_t x,uint16_t y);
 
 void PageShowAxis(void);
-void PageSpectrumInit(uint16_t color);
+void PageSpectrumInit(uint16_t t_color, uint8_t *t_data);
 void PageDisplayNumBelow_y_axis(num_display_below_y_axis t_index, char* t_shownum);
 void PageMoveNumBelow_y_axis(void);
 void PageClearAreaBelow_y_axis(void);
-void PageDisplaySpectrum(uint16_t t_index, uint32_t t_value, uint16_t t_color);
-void PageMoveSpectrum(uint16_t t_color);
+void PageDisplaySpectrum(uint16_t t_index, uint8_t t_value, uint16_t t_color);
+void PageMoveSpectrum(uint16_t t_color, uint8_t *t_data);
 void PageClearSpectrumArea(void);
 void PageDisplayBeforeSample(void);
 void PageDisplayIsSample(void);

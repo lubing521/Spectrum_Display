@@ -53,6 +53,7 @@
 /* USER CODE END Includes */
 
 extern UART_HandleTypeDef huart1;
+extern UART_HandleTypeDef huart2;
 
 /* USER CODE BEGIN Private defines */
 
@@ -61,7 +62,10 @@ extern UART_HandleTypeDef huart1;
 extern void _Error_Handler(char *, int);
 
 void MX_USART1_UART_Init(void);
+void MX_USART2_UART_Init(void);
 
+/* Initialize the UART low level resources */
+void HAL_UART_MspInit(UART_HandleTypeDef* uartHandle);
 /* USER CODE BEGIN Prototypes */
 
 void  U1_Test_SendString(void);

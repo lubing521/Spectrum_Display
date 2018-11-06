@@ -13,6 +13,8 @@ extern int8_t touchoffset;
 extern uint16_t BACK_COLOR;
 extern uint16_t POINT_COLOR;
 
+extern Spec_RecData AppSpecRecData;
+
 void showgraph(void)
 {
   uint16_t i;
@@ -213,10 +215,10 @@ void PageClearAreaBelow_y_axis(void)
          t_value -- the spectrum value
          t_color -- the color
 */
-void PageDisplaySpectrum(uint16_t t_index, uint32_t t_value, uint16_t t_color)
+void PageDisplaySpectrum(uint16_t t_index, uint8_t t_value, uint16_t t_color)
 {
   uint16_t index;
-  uint32_t value;
+  uint8_t value;
   uint16_t color;
   uint8_t i = 0;
   
@@ -234,9 +236,9 @@ void PageDisplaySpectrum(uint16_t t_index, uint32_t t_value, uint16_t t_color)
 *@brief: change the spectrum display if touch lcd was lef_move or right_move
 *@param: t_color -- the color of the line
 */
-void PageMoveSpectrum(uint16_t t_color)
+void PageMoveSpectrum(uint16_t t_color, uint8_t *t_data)
 {
-  uint32_t tempvalue;
+  uint8_t tempvalue;
   uint8_t i = 0;
   uint16_t color;
   
@@ -248,7 +250,7 @@ void PageMoveSpectrum(uint16_t t_color)
   {
     for(i=0; i<200; i++)
     {
-      tempvalue = test_data[i+touchoffset*200];
+      tempvalue = t_data[i+touchoffset*200];
       PageDisplaySpectrum(i, tempvalue, color);
     }
   }
@@ -272,12 +274,12 @@ void PageClearSpectrumArea(void)
 /*
 *@brief: when sample finish display the initial screen 
 */
-void PageSpectrumInit(uint16_t color)
+void PageSpectrumInit(uint16_t t_color, uint8_t *t_data)
 {
   uint16_t i = 0;
   PageShowAxis();
   for(i=0; i<200; i++)
-    PageDisplaySpectrum(i, test_data[i], color);
+    PageDisplaySpectrum(i, t_data[i], t_color);
 }
 
 /*

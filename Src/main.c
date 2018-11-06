@@ -90,8 +90,14 @@ uint8_t  setminute = 0;
 uint16_t POINT_COLOR=WHITE_4_4;
 uint16_t BACK_COLOR=BLACK;
 
+extern uint8_t AppReceiveDmaFinish;
+
 struTouch       ctpxy;      // 电容触摸屏的参数	
+
+/* function select */
 function_select MainFuntionSelect = k_function_basewindow;
+
+/* whether display back ground */
 display_background MainDispalyBackground = t_display;
 int8_t touchoffset = 0;
 /* USER CODE END 0 */
@@ -126,13 +132,16 @@ int main(void)
   MX_GPIO_Init();
   MX_DMA_Init();
   MX_USART1_UART_Init();
+  MX_USART2_UART_Init();
+  HAL_UART_MspInit(&huart2);
+  HAL_UART_MspInit(&huart1);
   MX_FSMC_Init();
 
   /* Initialize interrupts */
   MX_NVIC_Init();
   /* USER CODE BEGIN 2 */
-  HAL_UART_Receive_DMA(&huart1, U1_Rec_Buffer, U1_REC_MAX_BYTES);
-  delay_init(168);
+  //HAL_UART_Receive_DMA(&huart1, U1_Rec_Buffer, U1_REC_MAX_BYTES);
+  //delay_init(168);
   FT6336_I2C_GPIO_Init();   // LCD屏的触摸屏的2个引脚初始化
   LCD_Initialize();         // LCD屏的复位引脚，背光引脚 初始化
   Lcd_Clear_All(BLACK);
@@ -142,7 +151,7 @@ int main(void)
   /* USER CODE BEGIN WHILE */
   if(MainDispalyBackground == t_display)
   {
-    LcdDisplayBackground();
+    LcdDisplayBackground();    
     LcdDisplayWindows();
     MainDispalyBackground = t_nodisplay;
   }
@@ -152,18 +161,7 @@ int main(void)
 //     pageswitch(&pagenum);//页码切换
      AppSwitch();//功能切换
 //     ReadCTP(&ctpxy);
-//     if(ctpxy.ctpmainstatus == TOUCHED)
-//     {
-//       if((ctpxy.ctpxy.ctp_x >= ICON_SPECTRUM_XS) && (ctpxy.ctpxy.ctp_x <= (ICON_SPECTRUM_XS+ICON_WIDE_SIZE)) && (ctpxy.ctpxy.ctp_y >= ICON_SPECTRUM_YS) && (ctpxy.ctpxy.ctp_y <= (ICON_SPECTRUM_YS+ICON_HIGH_SIZE)))
-//       {
-//         Lcd_Clear_All(BLACK);
-//         PageShowAxis();
-//         App_y_axis_move();
-//         PageMoveNumBelow_y_axis();
-//         PageMoveSpectrum(BLUE_3_4);
-//       }
-//     }
-//     touchwait();
+     touchwait();
      delay_ms(10);
   }
 }
@@ -236,6 +234,10 @@ static void MX_NVIC_Init(void)
   /* USART1_IRQn interrupt configuration */
   HAL_NVIC_SetPriority(USART1_IRQn, 1, 0);
   HAL_NVIC_EnableIRQ(USART1_IRQn);
+  
+  /* USART2_IRQn interrupt enable */
+  HAL_NVIC_SetPriority(USART2_IRQn, 2, 0);
+  HAL_NVIC_EnableIRQ(USART2_IRQn);
 }
 
 /* USER CODE BEGIN 4 */

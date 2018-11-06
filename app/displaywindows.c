@@ -7,7 +7,8 @@
 */
 void LcdDisplayBackground(void)
 {
-  LcdShowPicture(0, 0, LCD_Y_SIZE, LCD_X_SIZE, (uint8_t *)(gImage_background));
+  //LcdShowPicture(0, 0, LCD_X_SIZE-1, LCD_Y_SIZE-1, (uint8_t *)(gImage_background));
+  Lcd_Clear_All(YELLOW_2_4);
 }
 
 /*

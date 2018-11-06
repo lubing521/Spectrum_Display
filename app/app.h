@@ -17,14 +17,27 @@ typedef enum t_dispaly_background
   t_nodisplay = 1U,
 }display_background;
 
+typedef struct t_spec_recdatatype
+{
+  uint8_t FramHead[3];
+  uint8_t Body[1024];
+  uint8_t FramTail[3];
+}Spec_RecDataType;
+
+typedef union t_Spec_RecData
+{
+  uint8_t datafield[1030];
+  Spec_RecDataType Realdatafiled;
+}Spec_RecData;
 
 void pageswitch(uint8_t *pagenum);//Ò³ÂëÇÐ»»
 void touchwait();
 
 void AppSwitch(void);
-void AppSpectrumDisplay(void);
+void AppSpectrumDisplay(uint8_t *t_data);
 void App_y_axis_move(void);
-void AppStartSample(void);
+HAL_StatusTypeDef AppStartSample(void);
+HAL_StatusTypeDef AppEnableRecDMA(UART_HandleTypeDef *t_huart, uint8_t *t_pData, uint16_t t_Size);
 
 #define plusxpos 850-60+8
 #define plusypos 220+16

@@ -49,6 +49,7 @@
 
 extern  uint8_t   U1_Rec_Buffer[U1_REC_MAX_BYTES];   // USART1  接收缓存区 
 extern  uint16_t  U1_Rec_Point;                      // USART1  接收指针
+extern uint8_t AppReceiveDmaFinish;
 uint8_t           Rx1Buffer;                         // 直接接收的每一个字节都存放这里
 
 extern  uint8_t   U1_Send_Buffer[U1_SEND_MAX_BYTES]; // USART1  发送缓存区 
@@ -57,6 +58,8 @@ extern  uint8_t   U1_Send_Buffer[U1_SEND_MAX_BYTES]; // USART1  发送缓存区
 UART_HandleTypeDef huart1;
 DMA_HandleTypeDef hdma_usart1_rx;
 
+UART_HandleTypeDef huart2;
+DMA_HandleTypeDef hdma_usart2_rx;
 /* USART1 init function */
 
 void MX_USART1_UART_Init(void)
@@ -74,7 +77,27 @@ void MX_USART1_UART_Init(void)
   {
     _Error_Handler(__FILE__, __LINE__);
   }
+}
 
+/*
+*@brief:init UART2 as the communication UART
+*/
+
+void MX_USART2_UART_Init(void)
+{
+
+  huart2.Instance = USART2;
+  huart2.Init.BaudRate = 9600;
+  huart2.Init.WordLength = UART_WORDLENGTH_8B;
+  huart2.Init.StopBits = UART_STOPBITS_1;
+  huart2.Init.Parity = UART_PARITY_NONE;
+  huart2.Init.Mode = UART_MODE_TX_RX;
+  huart2.Init.HwFlowCtl = UART_HWCONTROL_NONE;
+  huart2.Init.OverSampling = UART_OVERSAMPLING_16;
+  if (HAL_UART_Init(&huart2) != HAL_OK)
+  {
+    _Error_Handler(__FILE__, __LINE__);
+  }
 }
 
 void HAL_UART_MspInit(UART_HandleTypeDef* uartHandle)
@@ -122,6 +145,41 @@ void HAL_UART_MspInit(UART_HandleTypeDef* uartHandle)
   /* USER CODE BEGIN USART1_MspInit 1 */
 
   /* USER CODE END USART1_MspInit 1 */
+  }
+  if(uartHandle->Instance==USART2)
+  {
+    __HAL_RCC_USART2_CLK_ENABLE();
+  
+    /**USART2 GPIO Configuration    
+    PA2     ------> USART1_TX
+    PA3     ------> USART1_RX 
+    */
+    GPIO_InitStruct.Pin = GPIO_PIN_2|GPIO_PIN_3;
+    GPIO_InitStruct.Mode = GPIO_MODE_AF_PP;
+    GPIO_InitStruct.Pull = GPIO_PULLUP;
+    GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_VERY_HIGH;
+    GPIO_InitStruct.Alternate = GPIO_AF7_USART2;
+    HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
+
+    /* USART2 DMA Init */
+    /* USART2_RX Init */
+    hdma_usart2_rx.Instance = DMA1_Stream5;
+    hdma_usart2_rx.Init.Channel = DMA_CHANNEL_4;
+    hdma_usart2_rx.Init.Direction = DMA_PERIPH_TO_MEMORY;
+    hdma_usart2_rx.Init.PeriphInc = DMA_PINC_DISABLE;
+    hdma_usart2_rx.Init.MemInc = DMA_MINC_ENABLE;
+    hdma_usart2_rx.Init.PeriphDataAlignment = DMA_PDATAALIGN_BYTE;
+    hdma_usart2_rx.Init.MemDataAlignment = DMA_MDATAALIGN_BYTE;
+    hdma_usart2_rx.Init.Mode = DMA_CIRCULAR;
+    hdma_usart2_rx.Init.Priority = DMA_PRIORITY_HIGH;
+    hdma_usart2_rx.Init.FIFOMode = DMA_FIFOMODE_DISABLE;
+    if (HAL_DMA_Init(&hdma_usart2_rx) != HAL_OK)
+    {
+      _Error_Handler(__FILE__, __LINE__);
+    }
+
+    __HAL_LINKDMA(uartHandle,hdmarx,hdma_usart2_rx);
+
   }
 }
 
@@ -173,7 +231,7 @@ void    HAL_UART_RxCpltCallback(UART_HandleTypeDef *UartHandle)
     // 串口2的接收中断处理
     if(UartHandle->Instance==USART2)
     { 
-
+      AppReceiveDmaFinish = 1;
     }
     // 串口3的接收中断处理
     if(UartHandle->Instance==USART3)
