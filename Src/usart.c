@@ -45,8 +45,9 @@
 
 /* USER CODE BEGIN 0 */
 //#include "common.h"
-#include "string.h"
+#include "string.h"  
 
+#define HAL_UART_MODULE_ENABLED
 extern  uint8_t   U1_Rec_Buffer[U1_REC_MAX_BYTES];   // USART1  接收缓存区 
 extern  uint16_t  U1_Rec_Point;                      // USART1  接收指针
 extern uint8_t AppReceiveDmaFinish;
@@ -170,7 +171,7 @@ void HAL_UART_MspInit(UART_HandleTypeDef* uartHandle)
     hdma_usart2_rx.Init.MemInc = DMA_MINC_ENABLE;
     hdma_usart2_rx.Init.PeriphDataAlignment = DMA_PDATAALIGN_BYTE;
     hdma_usart2_rx.Init.MemDataAlignment = DMA_MDATAALIGN_BYTE;
-    hdma_usart2_rx.Init.Mode = DMA_CIRCULAR;
+    hdma_usart2_rx.Init.Mode = DMA_NORMAL;
     hdma_usart2_rx.Init.Priority = DMA_PRIORITY_HIGH;
     hdma_usart2_rx.Init.FIFOMode = DMA_FIFOMODE_DISABLE;
     if (HAL_DMA_Init(&hdma_usart2_rx) != HAL_OK)
@@ -232,6 +233,7 @@ void    HAL_UART_RxCpltCallback(UART_HandleTypeDef *UartHandle)
     if(UartHandle->Instance==USART2)
     { 
       AppReceiveDmaFinish = 1;
+      DMA1->HIFCR |= (1<<11); 
     }
     // 串口3的接收中断处理
     if(UartHandle->Instance==USART3)

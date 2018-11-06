@@ -197,6 +197,13 @@ static HAL_StatusTypeDef UART_EndTransmit_IT(UART_HandleTypeDef *huart);
 static HAL_StatusTypeDef UART_Receive_IT(UART_HandleTypeDef *huart);
 static HAL_StatusTypeDef UART_WaitOnFlagUntilTimeout(UART_HandleTypeDef *huart, uint32_t Flag, FlagStatus Status, uint32_t Tickstart, uint32_t Timeout);
 static void UART_SetConfig (UART_HandleTypeDef *huart);
+
+extern UART_HandleTypeDef huart2;
+
+void DMA1_Stream5_IRQHandler(void)
+{
+  UART_DMAReceiveCplt(huart2.hdmarx);
+}
 /**
   * @}
   */
@@ -962,8 +969,8 @@ HAL_StatusTypeDef HAL_UART_Receive_DMA(UART_HandleTypeDef *huart, uint8_t *pData
     huart->hdmarx->XferCpltCallback = UART_DMAReceiveCplt;
     
     /* Set the UART DMA Half transfer complete callback */
-    huart->hdmarx->XferHalfCpltCallback = UART_DMARxHalfCplt;
-    
+    //huart->hdmarx->XferHalfCpltCallback = UART_DMARxHalfCplt;
+    huart->hdmarx->XferHalfCpltCallback = NULL;
     /* Set the DMA error callback */
     huart->hdmarx->XferErrorCallback = UART_DMAError;
     

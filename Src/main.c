@@ -232,11 +232,11 @@ static void MX_NVIC_Init(void)
   HAL_NVIC_SetPriority(EXTI9_5_IRQn, 8, 0);
   HAL_NVIC_EnableIRQ(EXTI9_5_IRQn);
   /* USART1_IRQn interrupt configuration */
-  HAL_NVIC_SetPriority(USART1_IRQn, 1, 0);
+  HAL_NVIC_SetPriority(USART1_IRQn, 3, 0);
   HAL_NVIC_EnableIRQ(USART1_IRQn);
   
   /* USART2_IRQn interrupt enable */
-  HAL_NVIC_SetPriority(USART2_IRQn, 2, 0);
+  HAL_NVIC_SetPriority(USART2_IRQn, 4, 0);
   HAL_NVIC_EnableIRQ(USART2_IRQn);
 }
 
