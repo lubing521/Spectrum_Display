@@ -11,6 +11,12 @@ typedef enum t_function_select
   k_function_spectrum = 1,      /* change to spectrum function */        
 }function_select;
 
+typedef enum t_dispaly_background
+{
+  t_display = 0U,
+  t_nodisplay = 1U,
+}display_background;
+
 void pageswitch(uint8_t *pagenum);//Ò³ÂëÇÐ»»
 void touchwait();
 

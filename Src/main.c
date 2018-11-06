@@ -92,7 +92,7 @@ uint16_t BACK_COLOR=BLACK;
 
 struTouch       ctpxy;      // 电容触摸屏的参数	
 function_select MainFuntionSelect = k_function_basewindow;
-
+display_background MainDispalyBackground = t_display;
 int8_t touchoffset = 0;
 /* USER CODE END 0 */
 
@@ -140,8 +140,12 @@ int main(void)
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
-  LcdDisplayBackground();
-  LcdDisplayWindows();
+  if(MainDispalyBackground == t_display)
+  {
+    LcdDisplayBackground();
+    LcdDisplayWindows();
+    MainDispalyBackground = t_nodisplay;
+  }
   while (1)
   {
      ReadCTP(&ctpxy);

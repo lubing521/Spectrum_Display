@@ -24,6 +24,7 @@ extern uint8_t  setminute;
 extern uint8_t U1_Rec_Buffer[];
 extern struTouch  ctpxy;  
 extern UART_HandleTypeDef huart1;
+extern display_background MainDispalyBackground;
 //void appswitch(uint8_t *pagenum)
 //{
 //  uint32_t i;
@@ -155,6 +156,12 @@ void AppSwitch(void)
 {
   if(MainFuntionSelect == k_function_basewindow)
   {
+    if(MainDispalyBackground == t_display)
+    {
+      LcdDisplayBackground();
+      LcdDisplayWindows();
+      MainDispalyBackground = t_nodisplay;
+    }
     while(1)
     {
       ReadCTP(&ctpxy);
@@ -224,6 +231,11 @@ void App_y_axis_move(void)
           break;
         }
       }
+      if(ctpxy.ctpxy.ctp_x < stx)
+      {
+        MainFuntionSelect = k_function_basewindow;
+        MainDispalyBackground = t_display;
+      }
     }
   }
   
@@ -232,6 +244,13 @@ void App_y_axis_move(void)
     touchoffset = 0;
   }
   touchwait();
+}
+
+/* 
+*@brief:start sample
+*/
+void AppStartSample(void)
+{
 }
 
 void touchwait()
